@@ -43,8 +43,13 @@ import android.widget.RelativeLayout;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
-public class HomePage extends BaseActivity implements OnTouchListener,
-		OnDismissListener {
+/**
+ * 首页<br />
+ * 包含一个从其他地方复制来的地区选择模块以及一个游乐园搜索功能
+ *
+ * @author Robert Peng
+ */
+public class HomePage extends BaseActivity implements OnTouchListener, OnDismissListener {
 
 	private ArrayList<Button> navigators = new ArrayList<Button>();
 	private PopupWindow popupWindow;
@@ -69,32 +74,34 @@ public class HomePage extends BaseActivity implements OnTouchListener,
 		mListView = (ListView) findViewById(R.id.playgroundList);
 		mInflater = LayoutInflater.from(this);
 
+        // 从服务器更新游乐园列表
 		updateList();
 
 		mBundle = getIntent().getExtras();
-		
+		// Bundle内包括userId，userName
+
+        // 设定搜索框
 		mEditText = (EditText) findViewById(R.id.playgroundSearch);
 		Drawable img = getResources().getDrawable(R.drawable.search);
 		img.setBounds(0, 0, (int) mEditText.getTextSize(),
 				(int) mEditText.getTextSize());
 		mEditText.setCompoundDrawables(img, null, null, null);
-		mEditText
-				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView v, int actionId,
-							KeyEvent event) {
-						if (event != null
-								&& event.getAction() != KeyEvent.ACTION_DOWN)
-							return false;
-						if (actionId == EditorInfo.IME_ACTION_SEND
-								|| (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-							searchJump();
-							return true;
-						}
-						return false;
-					}
-				});
+		mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (event != null && event.getAction() != KeyEvent.ACTION_DOWN)
+					return false;
+				if (actionId == EditorInfo.IME_ACTION_SEND
+					|| (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    // 跳转至搜索结果页面
+					searchJump();
+					return true;
+				}
+				return false;
+			}
+		});
 
+        // 配置地区选择组件
 		displayWidth = getWindowManager().getDefaultDisplay().getWidth();
 		displayHeight = getWindowManager().getDefaultDisplay().getHeight();
 
@@ -109,8 +116,7 @@ public class HomePage extends BaseActivity implements OnTouchListener,
 			}
 		};
 		popupAnchor.setOnClickListener(mOnClickListener);
-		findViewById(R.id.citySelectorArrow).setOnClickListener(
-				mOnClickListener);
+		findViewById(R.id.citySelectorArrow).setOnClickListener(mOnClickListener);
 
 		mPopupView = new RelativeLayout(this);
 		int maxHeight = (int) (displayHeight * 0.7);
@@ -133,22 +139,22 @@ public class HomePage extends BaseActivity implements OnTouchListener,
 				onPressBack();
 			}
 		});
-		mPopupView.setBackgroundColor(getResources().getColor(
-				R.color.popup_main_background));
+		mPopupView.setBackgroundColor(
+                getResources().getColor(R.color.popup_main_background)
+        );
 
 		popupWindow = new PopupWindow(mPopupView, displayWidth, displayHeight);
 		popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 		popupWindow.setFocusable(false);
 		popupWindow.setOutsideTouchable(true);
-		findViewById(R.id.twoDScanMenuItem).setOnClickListener(
-				new OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						startActivity(new Intent(HomePage.this,
-								DecoderActivity.class));
-					}
-				});
+        findViewById(R.id.twoDScanMenuItem).setOnClickListener(new OnClickListener() {
+            @Override
+			public void onClick(View v) {
+				startActivity(new Intent(HomePage.this, DecoderActivity.class));
+			}
+		});
+
 	}
 
 	public boolean onPressBack() {
@@ -160,6 +166,7 @@ public class HomePage extends BaseActivity implements OnTouchListener,
 		}
 	}
 
+    /** 跳转至搜索结果页面 */
 	private void searchJump() {
 		String searchField = mEditText.getText().toString();
 		Bundle mBundle = new Bundle();
@@ -175,6 +182,7 @@ public class HomePage extends BaseActivity implements OnTouchListener,
 		jumpToPlayground((String) data.getCharSequenceExtra("playgroundID"));
 	}
 
+    /** 跳转至游乐园主页 */
 	private void jumpToPlayground(String playgroundID) {
 		Intent mIntent = new Intent(HomePage.this, MainActivity.class);
 		String NativePhoneNumber = null;
@@ -209,29 +217,23 @@ public class HomePage extends BaseActivity implements OnTouchListener,
 		return super.onKeyDown(keyCode, event);
 	}
 
+    /** 更新游乐园主页 */
 	private void updateList() {
 		new AsyncTask<Void, Void, String>() {
 			protected String doInBackground(Void... params) {
 				mViewList = new ArrayList<View>();
 				String result = null;
 				try {
-					JSONArray getResult = NetInfoParser
-							.getPlayGroundList(region);
+					JSONArray getResult = NetInfoParser.getPlayGroundList(region);
 					JSONObject iter;
 					for (int i = 0; i < getResult.length(); i++) {
 						iter = getResult.getJSONObject(i);
-						View v = mInflater.inflate(R.layout.playground_item,
-								null);
+						View v = mInflater.inflate(R.layout.playground_item, null);
 						v.setContentDescription(iter.getString("pgid"));
-						((TextView) v.findViewById(R.id.playgroundName))
-								.setText(iter.getString("name"));
-						((ImageView) v.findViewById(R.id.playgroundIcon))
-								.setImageBitmap(BitmapFactory.decodeFile(
-										Environment
-												.getExternalStorageDirectory()
-												.getPath()
-												+ "/lineonline/"
-												+ iter.getString("icon"),
+						((TextView) v.findViewById(R.id.playgroundName)).setText(iter.getString("name"));
+						((ImageView) v.findViewById(R.id.playgroundIcon)).setImageBitmap(BitmapFactory.decodeFile(
+										Environment.getExternalStorageDirectory().getPath()
+											+ "/lineonline/" + iter.getString("icon"),
 										new BitmapFactory.Options()));
 
 						v.setOnTouchListener(HomePage.this);

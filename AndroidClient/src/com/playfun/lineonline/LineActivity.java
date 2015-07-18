@@ -15,6 +15,12 @@ import android.widget.LinearLayout.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ *
+ * 排队页面<br />
+ * 包括用选项卡管理的 正在排 已经玩 两个页面
+ * @author Robert Peng
+ */
 public class LineActivity extends Activity implements OnTabChangeListener {
 	LocalActivityManager manager = null;
 	Context context = null;
@@ -24,12 +30,12 @@ public class LineActivity extends Activity implements OnTabChangeListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.line_main);
-		
 		LayoutInflater inflater = LayoutInflater.from(this);
 		
 		mBundle = getIntent().getExtras();
-		// includes userID, playgroundID
-		
+		// 包括 userID, userName, playgroundID
+
+        // 绑定选项卡
 		manager = new LocalActivityManager(this, true);
 		manager.dispatchCreate(savedInstanceState);
 		TabHost tabhost = (TabHost) findViewById(android.R.id.tabhost);
@@ -39,17 +45,15 @@ public class LineActivity extends Activity implements OnTabChangeListener {
 				R.layout.tabwidget_for_line, null);
 		TextView tvTab1 = (TextView) tabIndicator1.findViewById(R.id.tv_title);
 		tvTab1.setText("正在排");
+        Intent waitingIntent = new Intent(LineActivity.this, WaitingActivity.class);
+        waitingIntent.putExtras(mBundle);
+        tabhost.addTab(tabhost.newTabSpec("1").setIndicator(tabIndicator1)
+                .setContent(waitingIntent));
 
 		RelativeLayout tabIndicator2 = (RelativeLayout) inflater.inflate(
 				R.layout.tabwidget_for_line, null);
 		TextView tvTab2 = (TextView) tabIndicator2.findViewById(R.id.tv_title);
 		tvTab2.setText("已经玩");
-		
-		Intent waitingIntent = new Intent(LineActivity.this, WaitingActivity.class);
-		waitingIntent.putExtras(mBundle);
-		tabhost.addTab(tabhost.newTabSpec("1").setIndicator(tabIndicator1)
-				.setContent(waitingIntent));
-		
 		Intent playedIntent = new Intent(LineActivity.this, RateActivity.class);
 		playedIntent.putExtras(mBundle);
 		tabhost.addTab(tabhost.newTabSpec("2").setIndicator(tabIndicator2)

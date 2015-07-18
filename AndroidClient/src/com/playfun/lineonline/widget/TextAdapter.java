@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+// 被用于RegionSelect控件中
 public class TextAdapter extends ArrayAdapter<String> {
 
 	private Context mContext;

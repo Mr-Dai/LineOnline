@@ -25,6 +25,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ *
+ * @author Xu WeiYuan
+ */
 public class Util {
 	
 	private static final String TAG = "SDK_Sample.Util";

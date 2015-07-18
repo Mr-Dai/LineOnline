@@ -37,6 +37,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * 游玩项目介绍页面<br/>
+ * 包含一个底部预约菜单
+ *
+ * @author Robert Peng
+ */
 public class DetailActivity extends BaseActivity {
 
 	private int bookNowListSize;
@@ -72,7 +78,9 @@ public class DetailActivity extends BaseActivity {
 
 	private void getValue() {
 		mBundle = getIntent().getExtras();
-		// includes userID, playgroundID, attrID
+		// 包括 userID, userName, playgroundID, attrID
+
+        // 从服务器获取游玩项目详情
 		new AsyncTask<Void, Void, String>() {
 			protected void onPreExecute() {
 				mInflater = LayoutInflater.from(DetailActivity.this);
@@ -86,8 +94,7 @@ public class DetailActivity extends BaseActivity {
 			protected String doInBackground(Void... params) {
 				String result = null;
 				try {
-					JSONObject detailResult = NetInfoParser
-							.showAttractionDetail(attrID);
+					JSONObject detailResult = NetInfoParser.showAttractionDetail(attrID);
 
 					detailInfo.add(detailResult.getString("title"));
 					detailInfo.add(detailResult.getString("introduction"));
@@ -95,34 +102,28 @@ public class DetailActivity extends BaseActivity {
 
 					iconURL = detailResult.getString("photo");
 
-					JSONArray bookArray = detailResult
-							.getJSONArray("timeterval");
+					JSONArray bookArray = detailResult.getJSONArray("timeterval");
 					bookNowListSize = bookArray.length() > 3 ? 3 : bookArray.length();
+
 					for (int i = 0; i < 3 && i < bookArray.length(); i++) {
 						JSONObject iter = bookArray.getJSONObject(i);
 						View listItem = mInflater.inflate(
-								R.layout.book_now_list_item, bookNowItemList,
-								false);
+                            R.layout.book_now_list_item,
+                            bookNowItemList,
+						    false
+                        );
 						((TextView) listItem.findViewById(R.id.timeInterval))
-								.setText(iter.getString("starttime") + "~"
-										+ iter.getString("endtime"));
-						((TextView) listItem.findViewById(R.id.seatLeft))
-								.setText(iter.getString("number"));
+								.setText(iter.getString("starttime") + "~" + iter.getString("endtime"));
+						((TextView) listItem.findViewById(R.id.seatLeft)).setText(iter.getString("number"));
 						listItem.findViewById(R.id.bookNowBtn)
-								.setContentDescription(
-										attrID
-												+ "|"
-												+ detailResult
-														.getString("title")
-												+ "|" + userID + "|"
-												+ iter.getString("starttime")
-												+ "~"
-												+ iter.getString("endtime"));
-						listItem.findViewById(R.id.bookNowBtn)
-								.setOnTouchListener(mBookOnTouchListener);
+								.setContentDescription(attrID
+												+ "|" + detailResult.getString("title")
+												+ "|" + userID
+                                                + "|" + iter.getString("starttime")
+												+ "~" + iter.getString("endtime"));
+						listItem.findViewById(R.id.bookNowBtn).setOnTouchListener(mBookOnTouchListener);
 						mLineList.add(listItem);
 					}
-
 				} catch (SocketTimeoutException e) {
 					result = "Connection timeout! Please check your network connection.";
 					DetailActivity.this.finish();
@@ -145,6 +146,7 @@ public class DetailActivity extends BaseActivity {
 
 		}.execute(null, null, null);
 
+        // 设定底部菜单动画
 		Interpolator a = new AccelerateDecelerateInterpolator();
 		Interpolator b = new AccelerateInterpolator();
 		listShow = new ScaleAnimation(1, 1, 0, 1, Animation.RELATIVE_TO_SELF,
@@ -166,7 +168,6 @@ public class DetailActivity extends BaseActivity {
 	}
 
 	private void setValue() {
-
 		((TextView) DetailActivity.this.findViewById(R.id.attrName))
 				.setText(detailInfo.get(0));
 		((TextView) DetailActivity.this.findViewById(R.id.attrDetail))
@@ -179,8 +180,7 @@ public class DetailActivity extends BaseActivity {
 					View.GONE);
 		}
 		((ImageView) DetailActivity.this.findViewById(R.id.attrIcon))
-				.setImageBitmap(BitmapFactory
-						.decodeFile(Environment.getExternalStorageDirectory()
+				.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
 								.getPath() + "/lineonline/" + iconURL,
 								new BitmapFactory.Options()));
 
@@ -188,16 +188,15 @@ public class DetailActivity extends BaseActivity {
 		View loadMoreItem = mInflater.inflate(R.layout.load_more_list_item,
 				bookNowItemList, false);
 
+        // 查看更多可预约时间段
 		loadMoreItem.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					Intent mIntent = new Intent(getApplicationContext(),
-							BookListActivity.class);
+					Intent mIntent = new Intent(getApplicationContext(), BookListActivity.class);
 
 					mBundle.putString("attrName",
-							(String) ((TextView) findViewById(R.id.attrName))
-									.getText());
+                            (String) ((TextView) findViewById(R.id.attrName)).getText());
 					mBundle.putString("iconURL", iconURL);
 					mIntent.putExtras(mBundle);
 
@@ -241,9 +240,9 @@ public class DetailActivity extends BaseActivity {
 				DetailActivity.this.finish();
 			}
 		});
-
 	}
 
+    /** 显示底部菜单 */
 	private void showBookNow() {
 		if (!isShowing) {
 			layerMask.setVisibility(View.VISIBLE);
@@ -253,6 +252,7 @@ public class DetailActivity extends BaseActivity {
 		}
 	}
 
+    /** 隐藏底部菜单 */
 	private void dismiss() {
 		if (isShowing) {
 			bookNowItemList.setPadding(0, 0, 0, -1 * bookNowListHeight);
@@ -275,18 +275,17 @@ public class DetailActivity extends BaseActivity {
 		ViewGroup.LayoutParams params = child.getLayoutParams();
 		if (params == null) {
 			params = new ViewGroup.LayoutParams(
-					ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT
+            );
 		}
 		int childWidthSpec = ViewGroup.getChildMeasureSpec(0, 0, params.width);
 		int lpHeight = params.height;
 		int childHeightSpec;
 		if (lpHeight > 0) {
-			childHeightSpec = MeasureSpec.makeMeasureSpec(lpHeight,
-					MeasureSpec.EXACTLY);
+			childHeightSpec = MeasureSpec.makeMeasureSpec(lpHeight, MeasureSpec.EXACTLY);
 		} else {
-			childHeightSpec = MeasureSpec.makeMeasureSpec(0,
-					MeasureSpec.UNSPECIFIED);
+			childHeightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
 		}
 		child.measure(childWidthSpec, childHeightSpec);
 	}

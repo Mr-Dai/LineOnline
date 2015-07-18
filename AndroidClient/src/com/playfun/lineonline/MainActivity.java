@@ -18,6 +18,13 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
+/**
+ * 游乐园主页<br/>
+ * 用选项卡管理三个页面，分别为 预约、广场、排队，分别对应于BookActivity、SquareActivity、LineActivity<br/>
+ * 同时包含一个侧滑菜单，用于调出游玩路线推荐按钮
+ *
+ * @author Robert Peng
+ */
 public class MainActivity extends BaseActivity implements OnTabChangeListener {
 	LocalActivityManager manager = null;
 	private TabHost mTabHost;
@@ -27,6 +34,8 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_frame);
+
+        // 跳转至游玩路线推荐按钮
         findViewById(R.id.planBtn).setOnClickListener(new OnClickListener(){
         	public void onClick(View v){
         		Intent mIntent = new Intent(MainActivity.this, PlanActivity.class);
@@ -34,10 +43,11 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
         		startActivity(mIntent);
         	}
         });
+
 		Bundle mBundle = getIntent().getExtras();
-		// includes userID, playgroundID
+		// 包括 userID, userName, playgroundID
 		
-		// Initialization
+		// 初始化
 		manager = new LocalActivityManager(this, true);
 		manager.dispatchCreate(savedInstanceState);
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -52,40 +62,41 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
 				SlidingMenu.getInstance().hide();
 			}
 		});
-		
+
+        // 绑定选项卡
 		RelativeLayout tabIndicator1 = (RelativeLayout) inflater.inflate(
-				R.layout.tabwidget_for_main, null);
+				R.layout.tabwidget_for_main, null
+        );
 		TextView tvTab1 = (TextView) tabIndicator1.findViewById(R.id.tv_title);
 		ImageView ivTab1 = (ImageView) tabIndicator1.findViewById(R.id.iv_mark);
 		tvTab1.setText("预约");
 		ivTab1.setImageResource(R.drawable.book_navigator_icon);
+        Intent bookIntent = new Intent(this, BookActivity.class);
+        bookIntent.putExtras(new Bundle(mBundle));
+        mTabHost.addTab(mTabHost.newTabSpec("1").setIndicator(tabIndicator1).setContent(bookIntent));
+
 		RelativeLayout tabIndicator2 = (RelativeLayout) inflater.inflate(
-				R.layout.tabwidget_for_main, null);
+				R.layout.tabwidget_for_main, null
+        );
 		TextView tvTab2 = (TextView) tabIndicator2.findViewById(R.id.tv_title);
 		ImageView ivTab2 = (ImageView) tabIndicator2.findViewById(R.id.iv_mark);
 		tvTab2.setText("广场");
 		ivTab2.setImageResource(R.drawable.square_navigator_icon);
+        Intent squareIntent = new Intent(this, SquareActivity.class);
+        squareIntent.putExtras(new Bundle(mBundle));
+        mTabHost.addTab(mTabHost.newTabSpec("2").setIndicator(tabIndicator2).setContent(squareIntent));
+
 		RelativeLayout tabIndicator3 = (RelativeLayout) inflater.inflate(
-				R.layout.tabwidget_for_main, null);
+				R.layout.tabwidget_for_main, null
+        );
 		ImageView ivTab3 = (ImageView) tabIndicator3.findViewById(R.id.iv_mark);
 		TextView tvTab3 = (TextView) tabIndicator3.findViewById(R.id.tv_title);
 		tvTab3.setText("排队");
 		ivTab3.setImageResource(R.drawable.line_navigator_icon);
 		
-		Intent bookIntent = new Intent(this, BookActivity.class);
-		bookIntent.putExtras(new Bundle(mBundle));
-		mTabHost.addTab(mTabHost.newTabSpec("1").setIndicator(tabIndicator1)
-				.setContent(bookIntent));
-		
-		Intent squareIntent = new Intent(this, SquareActivity.class);
-		squareIntent.putExtras(new Bundle(mBundle));
-		mTabHost.addTab(mTabHost.newTabSpec("2").setIndicator(tabIndicator2)
-				.setContent(squareIntent));
-		
 		Intent lineIntent = new Intent(this, LineActivity.class);
 		lineIntent.putExtras(new Bundle(mBundle));
-		mTabHost.addTab(mTabHost.newTabSpec("3").setIndicator(tabIndicator3)
-				.setContent(lineIntent));
+		mTabHost.addTab(mTabHost.newTabSpec("3").setIndicator(tabIndicator3).setContent(lineIntent));
 		
 		mTabHost.setOnTabChangedListener(this);
 		
@@ -100,7 +111,8 @@ public class MainActivity extends BaseActivity implements OnTabChangeListener {
 		mTabHost.setCurrentTabByTag(tabId);
 		updateTab();
 	}
-	
+
+    /** 根据选中的选项卡更新选项卡按钮的颜色 */
 	private void updateTab() {
 		for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
 			TextView tv = (TextView) mTabHost.getTabWidget().getChildAt(i).findViewById(R.id.tv_title);

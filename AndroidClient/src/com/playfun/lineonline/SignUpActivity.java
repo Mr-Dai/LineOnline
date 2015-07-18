@@ -31,7 +31,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * 注册页面<br />
+ * 可跳转至登陆页面
+ *
+ * @author Robert Peng, Xu WeiYuan
+ */
 public class SignUpActivity extends BaseActivity {
+    /** 用于调用二维码扫描页面的request code */
+    private static final int ANONY_REQUEST_CODE = 1;
+    /** 用于调用登录页面的request code */
+    private static final int SIGNIN_REQUEST_CODE = 2;
 	
 	private TextView userNameView;
 	private TextView passwordView;
@@ -46,14 +56,6 @@ public class SignUpActivity extends BaseActivity {
 	private String userEmail;
 	private String confirm;
 	public boolean qqlogin = false;
-	@Override  
-    public void onResume() {  
-        super.onResume();  
-        // 在当前的activity中注册广播  
-        IntentFilter filter = new IntentFilter();  
-        filter.addAction("ExitApp");
-        this.registerReceiver(this.broadcastReceiver, filter); 
-    }
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class SignUpActivity extends BaseActivity {
 		passwordView = (TextView) findViewById(R.id.userPassword);
 		userEmailView = (TextView) findViewById(R.id.userEmail);
 		confirmView = (TextView) findViewById(R.id.userPasswordConfirm);
+
 		qqbtn = (ImageView)findViewById(R.id.loginqq);
 		qqbtn.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
@@ -73,20 +76,24 @@ public class SignUpActivity extends BaseActivity {
 				new Thread(runnableQQ).start();
 			}
 		});
+
+        // 跳转至二维码扫描页面
 		findViewById(R.id.logInAnony).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivityForResult(new Intent(SignUpActivity.this, DecoderActivity.class), 1);
+				startActivityForResult(new Intent(SignUpActivity.this, DecoderActivity.class), ANONY_REQUEST_CODE);
 			}
 		});
-		
+
+        // 跳转至登陆页面
 		findViewById(R.id.signInBtn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivityForResult(new Intent(SignUpActivity.this, SignInActivity.class), 2);
+				startActivityForResult(new Intent(SignUpActivity.this, SignInActivity.class), SIGNIN_REQUEST_CODE);
 			}
 		});
-		
+
+        // 注册
 		findViewById(R.id.signUpBtn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -94,26 +101,28 @@ public class SignUpActivity extends BaseActivity {
 				password = passwordView.getText().toString();
 				userEmail = userEmailView.getText().toString();
 				confirm = confirmView.getText().toString();
-				
+
+                // 检测用户输入是否合法
 				if (userName.equals("") || password.equals("") || userEmail.equals("") || confirm.equals("")) {
 					Debugger.DisplayToast(SignUpActivity.this, "上述信息不能为空");
 					return;
 				}
-				
 				if (!password.equals(confirm)) {
 					Debugger.DisplayToast(SignUpActivity.this, "输入密码不匹配");
 					return;
 				}
-				
+
+                // 尝试注册
 				new AsyncTask<Void, Void, String>() {
-					
 					private boolean isSuccess = false;
 					
 					@Override
 					protected String doInBackground(Void... params) {
 						String userID = null;
 						try {
+                            // 向服务器发送请求
 							String result = NetInfoParser.signUp(userName, password, userEmail);
+                            // 处理服务器回复
 							if (result.split(" ")[0].equals("True")) {
 								isSuccess = true;
 								userID = result.split(" ")[1];
@@ -128,6 +137,7 @@ public class SignUpActivity extends BaseActivity {
 					
 					protected void onPostExecute(String userID) {
 						if (isSuccess) {
+                            // 注册成功，跳转至主页
 							Bundle mBundle = new Bundle();
 							mBundle.putString("userID", userID);
 							mBundle.putString("userName", userName);
@@ -152,16 +162,20 @@ public class SignUpActivity extends BaseActivity {
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(qqlogin==true){
-		 mTencent.onActivityResult(requestCode, resultCode, data);
-		 return; 
+        if (data == null)
+            return;
+
+		if(qqlogin == true){
+		    mTencent.onActivityResult(requestCode, resultCode, data);
+		    return;
 		}
-		if (data == null)
-			return;
+
 		switch(requestCode) {
-		case 1:
+		case ANONY_REQUEST_CODE:
+            // TODO pass
 			break;
-		case 2:
+		case SIGNIN_REQUEST_CODE:
+            // 登录成功，跳转至主页
 			Bundle mBundle = new Bundle();
 			mBundle.putString("userID", (String) data.getCharSequenceExtra("userID"));
 			mBundle.putString("userName", (String) data.getCharSequenceExtra("userName"));
@@ -179,6 +193,11 @@ public class SignUpActivity extends BaseActivity {
 			break;
 		}
 	}
+
+
+    /**
+     * @author Xu WeiYuan
+     */
 	final Handler handlerQQ = new Handler(){
 		  public void handleMessage(Message msg){
 			 //Log.e("userinfo2",userinformation.toString());

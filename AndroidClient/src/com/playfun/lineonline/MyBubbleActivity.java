@@ -25,6 +25,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * 我的朋友圈页面
+ *
+ * @author Robert Peng
+ */
 public class MyBubbleActivity extends Activity {
 	private LayoutInflater mInflater;
 	private ArrayList<View> mLineList;

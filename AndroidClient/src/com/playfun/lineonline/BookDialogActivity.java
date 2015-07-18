@@ -14,6 +14,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+/**
+ * 点击预定按钮后弹出的对话框
+ *
+ * @author Robert Peng
+ */
 public class BookDialogActivity extends Activity {
 	private String attrID;
 	private String attrName;

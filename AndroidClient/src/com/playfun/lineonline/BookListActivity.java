@@ -28,6 +28,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * 用于查看游玩项目所有可预约时间段的页面
+ *
+ * @author Robert Peng
+ */
 public class BookListActivity extends Activity {
 
 	private ArrayList<View> mLineList;
@@ -45,24 +50,22 @@ public class BookListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.book_list_activity);
 
-		findViewById(R.id.backwardArrow).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						BookListActivity.this.finish();
-					}
-				});
+		findViewById(R.id.backwardArrow).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				BookListActivity.this.finish();
+			}
+		});
 		setRate((LinearLayout) findViewById(R.id.ratingBar), 4.5f);
 
 		mInflater = LayoutInflater.from(BookListActivity.this);
 		mBundle = getIntent().getExtras();
-		// includes userID, playgroundID, attrID
+		// 包括 userID, userName, playgroundID, attrID
 		attrID = mBundle.getString("attrID");
 		userID = mBundle.getString("userID");
 		iconURL = mBundle.getString("iconURL");
 		setImage();
-		((TextView) findViewById(R.id.attrName)).setText(mBundle
-				.getString("attrName"));
+		((TextView) findViewById(R.id.attrName)).setText(mBundle.getString("attrName"));
 
 		mListView = (MyListView) findViewById(R.id.bookItemList);
 		
@@ -71,12 +74,14 @@ public class BookListActivity extends Activity {
 
 	void setImage() {
 		((ImageView) BookListActivity.this.findViewById(R.id.attrIcon))
-				.setImageBitmap(BitmapFactory
-						.decodeFile(Environment.getExternalStorageDirectory()
-								.getPath() + "/lineonline/" + iconURL,
-								new BitmapFactory.Options()));
+                .setImageBitmap(BitmapFactory.decodeFile(
+                    Environment.getExternalStorageDirectory().getPath() + "/lineonline/" + iconURL,
+                    new BitmapFactory.Options()
+                )
+        );
 	}
 
+    /** 根据评分设定星级显示图案 */
 	void setRate(LinearLayout v, float rate) {
 		ArrayList<ImageView> mRatingBar = new ArrayList<ImageView>();
 		int i;
@@ -100,6 +105,7 @@ public class BookListActivity extends Activity {
 			Debugger.DisplayToast(this, postResult);
 	}
 
+    /** 从服务器下载可预约时间段列表 */
 	private void updateList() {
 		new AsyncTask<Void, Void, String>() {
 			protected void onPreExecute() {

@@ -9,6 +9,9 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.LinearLayout;
 
+/**
+ * 箭头按钮旋转OnClickListener
+ */
 public class MyOnClickListener implements OnClickListener {
 
 	private RotateAnimation arrowRotate;

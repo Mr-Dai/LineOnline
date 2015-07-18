@@ -32,6 +32,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * 游玩项目预订页面<br/>
+ * 显示所有可供预订的游玩项目及时间段<br/>
+ *
+ * @author Robert Peng
+ */
 public class BookActivity extends Activity {
 
 	private ArrayList<View> mLineList;
@@ -41,9 +47,7 @@ public class BookActivity extends Activity {
 	private String playgroundID;
 	private String userID;
 	private Bundle mBundle;
-	private BookOnTouchListener mBookOnTouchListener = new BookOnTouchListener(
-			this);
-	
+	private BookOnTouchListener mBookOnTouchListener = new BookOnTouchListener(this);
 	private String bookedNum;
 	private TextView bookedView;
 
@@ -54,33 +58,33 @@ public class BookActivity extends Activity {
 		mInflater = LayoutInflater.from(this);
 
 		mBundle = getIntent().getExtras();
-		// includes userID, playgroundID
+		// 包括 userID, userName, playgroundID
 		
 		bookedView = (TextView) findViewById(R.id.bookedNum);
-		
+        // 绑定侧滑菜单按钮
 		findViewById(R.id.listBtn).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				SlidingMenu.getInstance().show();
 			}
 		});
-		
+        // 绑定地图页面跳转按钮
 		findViewById(R.id.mapBtn).setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				Intent mapIntent = new Intent(BookActivity.this, MapActivity.class);
-				
 				mapIntent.putExtras(new Bundle(mBundle));
 				startActivity(mapIntent);
 			}
 		});
-		
+
+        // 为搜索框设定小图标
 		EditText mEditText = (EditText) findViewById(R.id.attrSearch);
 		Drawable img = getResources().getDrawable(R.drawable.search);
-		img.setBounds(0, 0, (int) mEditText.getTextSize(),
-				(int) mEditText.getTextSize());
+		img.setBounds(0, 0, (int) mEditText.getTextSize(), (int) mEditText.getTextSize());
 		mEditText.setCompoundDrawables(img, null, null, null);
-		mListView = (MyListView) findViewById(R.id.attrList);
+
+        mListView = (MyListView) findViewById(R.id.attrList);
 		userID = mBundle.getString("userID");
 		((TextView)findViewById(R.id.userName)).setText(mBundle.getString("userName"));
 		playgroundID = mBundle.getString("playgroundID");
@@ -103,6 +107,7 @@ public class BookActivity extends Activity {
 			Debugger.DisplayToast(this, postResult);
 	}
 
+    /** 从服务器更新列表 */
 	private void updateList() {
 		new AsyncTask<Void, Void, String>() {
 			protected void onPreExecute() {
@@ -110,8 +115,8 @@ public class BookActivity extends Activity {
 			}
 
 			protected String doInBackground(Void... params) {
-				
 				bookedNum = "0";
+                // 从服务器获取用户已预约的项目数
 				try {
 					bookedNum = NetInfoParser.getAppointmentNum(userID);
 				} catch (Exception e) {
@@ -121,8 +126,7 @@ public class BookActivity extends Activity {
 				
 				String result = null;
 				try {
-					JSONArray getResult = NetInfoParser
-							.getAttractionList(playgroundID);
+					JSONArray getResult = NetInfoParser.getAttractionList(playgroundID);
 					JSONObject iter;
 					for (int index = 0; index < getResult.length(); index++) {
 						iter = getResult.getJSONObject(index);
@@ -142,7 +146,7 @@ public class BookActivity extends Activity {
 												+ "/lineonline/"
 												+ iter.getString("photo"),
 										new BitmapFactory.Options()));
-                        Log.e("path",Environment.getExternalStorageDirectory().getPath());
+                        Log.e("path", Environment.getExternalStorageDirectory().getPath());
 						LinearLayout bookListContainer = ((LinearLayout) listItemView
 								.findViewById(R.id.listItemDetailList));
 						JSONArray bookArray = iter.getJSONArray("timeterval");
@@ -167,43 +171,39 @@ public class BookActivity extends Activity {
 							((TextView) bookNowView.findViewById(R.id.seatLeft))
 									.setText(iiter.getString("number"));
 
-							bookNowView
-									.findViewById(R.id.bookNowBtn)
-									.setContentDescription(
-											gameID + "|"
-													+ iter.getString("title")
-													+ "|" + userID + "|"
-													+ startTime + "~" + endTime);
+							bookNowView.findViewById(R.id.bookNowBtn)
+									   .setContentDescription(gameID
+                                                + "|" + iter.getString("title")
+												+ "|" + userID
+                                                + "|" + startTime
+                                                + "~" + endTime);
 
 							if (Integer.parseInt(iiter.getString("number")) > 0) {
 								bookNowView.findViewById(R.id.bookNowBtn)
-										.setOnTouchListener(
-												mBookOnTouchListener);
+                                           .setOnTouchListener(mBookOnTouchListener);
 							}
 
-							bookListContainer
-									.addView(bookNowView);
+							bookListContainer.addView(bookNowView);
 						}
 
 						if (index == 0) {
 							listItemView.setPadding(
-									listItemView.getPaddingLeft(), 0,
-									listItemView.getPaddingRight(),
-									listItemView.getPaddingBottom());
+								listItemView.getPaddingLeft(),
+                                0,
+								listItemView.getPaddingRight(),
+								listItemView.getPaddingBottom()
+                            );
 						}
 
-						MyOnClickListener mOnClickListener = new MyOnClickListener(
-								listItemView);
-						listItemView.findViewById(R.id.listItemArrow)
-								.setOnClickListener(mOnClickListener);
+						MyOnClickListener mOnClickListener = new MyOnClickListener(listItemView);
+
+						listItemView.findViewById(R.id.listItemArrow).setOnClickListener(mOnClickListener);
 
 						listItemView.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								Intent mIntent = new Intent(BookActivity.this,
-										DetailActivity.class);
-								mBundle.putString("attrID",
-										(String) v.getContentDescription());
+								Intent mIntent = new Intent(BookActivity.this, DetailActivity.class);
+								mBundle.putString("attrID", (String) v.getContentDescription());
 								mIntent.putExtras(mBundle);
 								startActivity(mIntent);
 							}

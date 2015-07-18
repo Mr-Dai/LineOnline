@@ -23,6 +23,10 @@ import android.widget.Toast;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView.OnQRCodeReadListener;
 
+/**
+ * 二维码扫描页面
+ * @author Xu WeiYuan
+ */
 public class DecoderActivity extends Activity implements OnQRCodeReadListener {
 
     private QRCodeReaderView                   mydecoderview;

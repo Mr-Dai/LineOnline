@@ -14,6 +14,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * 点赞按钮的OnClickListener
+ *
+ * @author Robert Peng
+ */
 public class LikeOnClickListener implements OnClickListener {
 	private ImageView likeIcon;
 	private TextView listNum;

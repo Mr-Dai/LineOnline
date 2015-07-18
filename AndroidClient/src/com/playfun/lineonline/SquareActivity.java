@@ -35,7 +35,11 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.view.View.OnClickListener;
 
-;
+/**
+ * 广场页面
+ *
+ * @author Robert Peng
+ */
 public class SquareActivity extends BaseActivity {
 	private LvAdapter mAdapter;
 	private MyListView mListView;
@@ -52,12 +56,13 @@ public class SquareActivity extends BaseActivity {
 		mInflater = LayoutInflater.from(this);
 
 		mBundle = getIntent().getExtras();
-		// includes userID, playgroundID
+		// 包括 userID, userName, playgroundID
 		
 		userID = mBundle.getString("userID");
 		userName = mBundle.getString("userName");
 		playgroundID = mBundle.getString("playgroundID");
 
+        // 判断用户是否是匿名登录
 		if (userName.length() < 7) {
 			((TextView) findViewById(R.id.userID)).setText(userName);
 		} else {
@@ -104,9 +109,9 @@ public class SquareActivity extends BaseActivity {
 		findViewById(R.id.sortLayout).bringToFront();
 	}
 
+    /** 从服务器更新朋友圈内容 */
 	private void updateList() {
 		new AsyncTask<Void, Void, String>() {
-
 			protected void onPreExecute() {
 				mLineList = new ArrayList<View>();
 			}

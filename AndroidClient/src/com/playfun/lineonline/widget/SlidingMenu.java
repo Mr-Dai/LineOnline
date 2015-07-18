@@ -21,6 +21,11 @@ import android.view.animation.Interpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+/**
+ * 侧滑菜单
+ *
+ * @author Robert Peng
+ */
 public class SlidingMenu extends HorizontalScrollView {
 	public boolean isShowing = false;
 

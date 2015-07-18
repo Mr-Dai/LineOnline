@@ -8,6 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+/**
+ * 在ListView中包含View的adapter，在多处被用到
+ *
+ * @author Robert Peng
+ */
 public class LvAdapter extends BaseAdapter {
 	private List<View> list;
 	private Context context;

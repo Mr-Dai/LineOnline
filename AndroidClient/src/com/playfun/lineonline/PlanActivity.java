@@ -25,6 +25,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * 推荐路线页面
+ *
+ * @author Robert Peng
+ */
 public class PlanActivity extends Activity {
 	
 	private Bundle mBundle;

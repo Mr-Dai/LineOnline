@@ -12,6 +12,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+/**
+ * 打开APP首先进入的欢迎页面<br />
+ * 将尝试从SharedPreferences中读出自动登录设置并尝试登录。<br />
+ * 登录成功则进入主页，登录失败将跳转至注册页面
+ *
+ * @author Robert Peng
+ */
 public class WelcomeActivity extends Activity {
 	private Bundle mBundle = new Bundle();
 	private String userName;
@@ -21,14 +28,16 @@ public class WelcomeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome_main);
-		
+
+        // 从SharedPreferences中取出自动登录设置
 		SharedPreferences settings = getSharedPreferences("userLogin", Activity.MODE_PRIVATE);
 		userName = settings.getString("userName", "");
 		userPassword = settings.getString("userPassword", "");
 		
 		mBundle.putString("userName", userName);
-		
+
 		if (settings.getBoolean("autoLogIn", false)) {
+            // 尝试自动登录
 			new AsyncTask<Void, Void, String>() {
 				private boolean isSuccess = false;
 				
@@ -36,7 +45,9 @@ public class WelcomeActivity extends Activity {
 				protected String doInBackground(Void... params) {
 					String userID = null;
 					try {
+                        // 向服务器发送请求
 						String result = NetInfoParser.signIn(userName, userPassword);
+                        // 处理服务器返回结果
 						if (result.split(" ")[0].equals("True")) {
 							isSuccess = true;
 							userID = result.split(" ")[1];
@@ -54,9 +65,10 @@ public class WelcomeActivity extends Activity {
 					try {
 						Thread.sleep(3000);
 					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
+                        e1.printStackTrace();
+                    }
 					if (isSuccess) {
+                        // 登录成功，进入主页
 						Intent mIntent = new Intent(WelcomeActivity.this, HomePage.class);
 						Bundle mBundle = new Bundle();
 						mBundle.putString("userID", userID);
@@ -66,6 +78,7 @@ public class WelcomeActivity extends Activity {
 						Debugger.DisplayToast(WelcomeActivity.this, "登陆成功！");
 						WelcomeActivity.this.finish();
 					} else {
+                        // 登录失败，进入注册页面
 						Debugger.DisplayToast(WelcomeActivity.this, userID);
 						Intent mIntent = new Intent(WelcomeActivity.this, SignUpActivity.class);
 						startActivity(mIntent);
@@ -74,6 +87,7 @@ public class WelcomeActivity extends Activity {
 				}
 			}.execute(null, null, null);
 		} else {
+            // 未设置自动登录，直接进入注册页面
 			Intent mIntent = new Intent(WelcomeActivity.this, SignUpActivity.class);
 			mIntent.putExtras(mBundle);
 			startActivity(mIntent);

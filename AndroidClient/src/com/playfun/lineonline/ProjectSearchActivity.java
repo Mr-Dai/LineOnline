@@ -29,6 +29,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * 游乐园搜索结果展示页面
+ *
+ * @author Robert Peng
+ */
 public class ProjectSearchActivity extends Activity implements OnClickListener {
 
 	private LvAdapter mAdapter;
@@ -44,14 +49,13 @@ public class ProjectSearchActivity extends Activity implements OnClickListener {
 		mListView = (ListView) findViewById(R.id.projectListView);
 		mInflater = LayoutInflater.from(this);
 
+        // 发送搜索请求
 		new AsyncTask<Void, Void, String>() {
 			protected String doInBackground(Void... params) {
 				mList = new ArrayList<View>();
 				String result = null;
 				try {
-					JSONArray getResult = NetInfoParser
-							.searchPlayground(getIntent().getExtras()
-									.getString("searchField"));
+					JSONArray getResult = NetInfoParser.searchPlayground(getIntent().getExtras().getString("searchField"));
 					JSONObject iter;
 					for (int i = 0; i < getResult.length(); i++) {
 						iter = getResult.getJSONObject(i);

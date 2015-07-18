@@ -9,6 +9,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+/**
+ * 预约按钮的OnTouchListener
+ *
+ * @author Robert Peng
+ */
 public class BookOnTouchListener implements OnTouchListener {
 	
 	private Activity context;

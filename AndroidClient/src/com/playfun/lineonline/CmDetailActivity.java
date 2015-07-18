@@ -32,6 +32,11 @@ import com.playfun.lineonline.widget.BaseActivity;
 import com.playfun.lineonline.widget.LikeOnClickListener;
 import com.playfun.lineonline.widget.LvAdapter;
 
+/**
+ * 朋友圈评论页面
+ *
+ * @author Robert Peng
+ */
 public class CmDetailActivity extends BaseActivity {
 	private ListView mListView;
 	private Bundle mBundle;

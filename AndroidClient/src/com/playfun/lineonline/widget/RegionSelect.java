@@ -19,6 +19,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+/**
+ * 地区选择控件
+ */
 public class RegionSelect extends LinearLayout {
 
 	private ListView regionListView;

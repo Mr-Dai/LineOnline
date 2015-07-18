@@ -32,6 +32,11 @@ import android.widget.TextView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+/**
+ * 游玩项目评分页面
+ *
+ * @author  Robert Peng
+ */
 public class RatingActivity extends Activity implements OnClickListener {
 	private ArrayList<ImageView> mRatingBar = new ArrayList<ImageView>();
 	private String attrID;

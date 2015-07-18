@@ -117,6 +117,12 @@ import com.baidu.navisdk.ui.widget.RoutePlanObserver;
 import com.baidu.navisdk.util.common.PreferenceHelper;
 import com.baidu.navisdk.util.common.ScreenUtil;
 import com.baidu.nplatform.comapi.map.MapGLSurfaceView;
+
+/**
+ * 地图页面
+ *
+ * @author Xu WeiYuan
+ */
 public class MapActivity extends FragmentActivity implements
 		OnGetPoiSearchResultListener, OnGetSuggestionResultListener {
 	private PoiSearch mPoiSearch = null;

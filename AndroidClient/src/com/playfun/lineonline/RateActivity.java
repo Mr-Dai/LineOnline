@@ -28,6 +28,11 @@ import com.playfun.lineonline.widget.MyListView;
 import com.playfun.lineonline.widget.LvAdapter;
 import com.playfun.lineonline.widget.MyListView.OnRefreshListener;
 
+/**
+ * 已经玩 页面
+ *
+ * @author Robert Peng
+ */
 public class RateActivity extends Activity implements OnTouchListener {
 	private ArrayList<View> mLineList;
 	private LvAdapter mAdapter;

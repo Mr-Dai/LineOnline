@@ -32,6 +32,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * 正在排 页面
+ *
+ * @author Robert Peng
+ */
 public class WaitingActivity extends Activity {
 
 	private ArrayList<View> mLineList;

@@ -21,6 +21,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+/**
+ * 可下拉刷新的ListView
+ */
 public class MyListView extends ListView implements OnScrollListener {
 
 	private final static int RELEASE_To_REFRESH = 0;// 下拉过程的状态值

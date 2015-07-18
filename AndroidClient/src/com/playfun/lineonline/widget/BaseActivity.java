@@ -13,9 +13,14 @@ import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 
-// 所有Activity的基类，用于实现所有Activity共有的功能，如：
-// 唤出菜单、退出登录、关闭程序
-public class BaseActivity extends Activity {  
+/**
+ *
+ * 基类Activity，用于实现大部分Activity共有的功能，包括：<br />
+ * 唤出菜单、退出登录、关闭程序
+ *
+ * @author Robert Peng
+ */
+public abstract class BaseActivity extends Activity {
     protected BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {  
         @Override  
         public void onReceive(Context context, Intent intent) {  

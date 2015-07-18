@@ -32,6 +32,11 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.graphics.Matrix;
 
+/**
+ * 朋友圈发布页面
+ *
+ * @author Robert Peng
+ */
 public class BubbleActivity extends Activity {
 	public ImageView img;
 	public ImageView upload;
