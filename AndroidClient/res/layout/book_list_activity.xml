@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/bg_orange"
+        android:gravity="center"
+        android:text="预约"
+        android:textColor="@color/text_deep_deep_gray"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/backwardArrow"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@id/headerText"
+        android:padding="15dp"
+        android:src="@drawable/arrow_left" />
+
+    <RelativeLayout
+        android:id="@+id/attrInfoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/headerText" >
+
+        <ImageView
+            android:id="@+id/attrIcon"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:src="@drawable/loading" />
+
+        <TextView
+            android:id="@+id/attrName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@id/attrIcon"
+            android:gravity="bottom"
+            android:paddingLeft="10dp"
+            android:text="U型滑板"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/ratingBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@id/attrName"
+            android:layout_toRightOf="@id/attrIcon"
+            android:layout_below="@id/attrName"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp" >
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="1"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_star" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="2"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_star" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="3"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_star" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="4"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_star" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="5"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_star" />
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <com.playfun.lineonline.widget.MyListView
+        android:id="@+id/bookItemList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/attrInfoLayout" />
+
+</RelativeLayout>

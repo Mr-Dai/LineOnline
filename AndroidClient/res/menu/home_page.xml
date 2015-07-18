@@ -2,17 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.playfun.lineonline.HomePage" >
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
-    
     <item
         android:id="@+id/exit"
         android:orderInCategory="100"
-        android:title="@string/exitText"
-        app:showAsAction="never"/>
-
+        android:title="@string/exitText"/>
 </menu>

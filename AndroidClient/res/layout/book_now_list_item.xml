@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:padding="5dp"
+    android:background="@drawable/line_list_item_bg_with_thin_border"
+    android:descendantFocusability="blocksDescendants" >
+    <TextView android:id="@+id/timeInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textColor="@color/text_gray"
+        android:text="14:30~14:45"
+        android:textSize="18sp"
+        android:paddingLeft="10dp"
+        android:layout_alignParentLeft="true"/>
+    
+    <TextView
+        android:id="@+id/seatLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:textColor="@color/text_orange"
+        android:textStyle="bold"
+        android:text="3"
+        android:textSize="15sp" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textColor="@color/text_gray"
+        android:layout_toLeftOf="@id/seatLeft"
+        android:text="余"
+        android:textSize="18sp"
+        android:paddingLeft="12dp" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/seatLeft"
+        android:text="个空位"
+        android:textColor="@color/text_gray"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/bookNowBtn"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="预约"
+        android:textStyle="bold"
+        android:focusable="false"
+		android:focusableInTouchMode="false"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/deep_blue_button_with_round_corner"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>

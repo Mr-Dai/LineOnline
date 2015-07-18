@@ -13,9 +13,9 @@ public class MyOnClickListener implements OnClickListener {
 
 	private RotateAnimation arrowRotate;
 	private RotateAnimation arrowRotateReverse;
-	
+
 	private LinearLayout detailList;
-	
+
 	public MyOnClickListener(View v) {
 		detailList = (LinearLayout) v.findViewById(R.id.listItemDetailList);
 		arrowRotate = new RotateAnimation(0, 90,
@@ -24,7 +24,7 @@ public class MyOnClickListener implements OnClickListener {
 		arrowRotate.setInterpolator(new LinearInterpolator());
 		arrowRotate.setDuration(150);
 		arrowRotate.setFillAfter(true);
-	
+
 		arrowRotateReverse = new RotateAnimation(90, 0,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -32,12 +32,12 @@ public class MyOnClickListener implements OnClickListener {
 		arrowRotateReverse.setDuration(150);
 		arrowRotateReverse.setFillAfter(true);
 	}
-	
+
 	public void onClick(View v) {
 		int id = v.getId();
 		switch (id) {
 		case R.id.listItemArrow:
-			if(detailList.getVisibility() == View.GONE) {
+			if (detailList.getVisibility() == View.GONE) {
 				v.clearAnimation();
 				v.startAnimation(arrowRotate);
 				detailList.setVisibility(View.VISIBLE);
@@ -46,12 +46,6 @@ public class MyOnClickListener implements OnClickListener {
 				v.startAnimation(arrowRotateReverse);
 				detailList.setVisibility(View.GONE);
 			}
-			break;
-		case R.id.listItemBookButton1:
-			break;
-		case R.id.listItemBookButton2:
-			break;
-		case R.id.listItemBookButton3:
 			break;
 		}
 	}

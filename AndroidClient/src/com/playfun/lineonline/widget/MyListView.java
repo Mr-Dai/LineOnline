@@ -1,5 +1,7 @@
-package com.playfun.lineonline.widget;
+ï»¿package com.playfun.lineonline.widget;
+
 import com.playfun.lineonline.R;
+import com.playfun.lineonline.util.Debugger;
 
 import java.util.Date;
 
@@ -21,24 +23,26 @@ import android.widget.TextView;
 
 public class MyListView extends ListView implements OnScrollListener {
 
-	private final static int RELEASE_To_REFRESH = 0;// ÏÂÀ­¹ı³ÌµÄ×´Ì¬Öµ
-	private final static int PULL_To_REFRESH = 1; // ´ÓÏÂÀ­·µ»Øµ½²»Ë¢ĞÂµÄ×´Ì¬Öµ
-	private final static int REFRESHING = 2;// ÕıÔÚË¢ĞÂµÄ×´Ì¬Öµ
+	private final static int RELEASE_To_REFRESH = 0;// ä¸‹æ‹‰è¿‡ç¨‹çš„çŠ¶æ€å€¼
+	private final static int PULL_To_REFRESH = 1; // ä»ä¸‹æ‹‰è¿”å›åˆ°ä¸åˆ·æ–°çš„çŠ¶æ€å€¼
+	private final static int REFRESHING = 2;// æ­£åœ¨åˆ·æ–°çš„çŠ¶æ€å€¼
 	private final static int DONE = 3;
 	private final static int LOADING = 4;
-	
-	// Êµ¼ÊµÄpaddingµÄ¾àÀëÓë½çÃæÉÏÆ«ÒÆ¾àÀëµÄ±ÈÀı
-	private final static int RATIO = 3;
+
+	// å®é™…çš„paddingçš„è·ç¦»ä¸ç•Œé¢ä¸Šåç§»è·ç¦»çš„æ¯”ä¾‹
+	private final static int RATIO = 2;
 	private LayoutInflater inflater;
 
-	// ListViewÍ·²¿ÏÂÀ­Ë¢ĞÂµÄ²¼¾Ö
+	// ListViewå¤´éƒ¨ä¸‹æ‹‰åˆ·æ–°çš„å¸ƒå±€
 	private LinearLayout headerView;
 	private TextView lvHeaderTipsTv;
 	private TextView lvHeaderLastUpdatedTv;
 	private ImageView lvHeaderArrowIv;
 	private ProgressBar lvHeaderProgressBar;
 
-	// ¶¨ÒåÍ·²¿ÏÂÀ­Ë¢ĞÂµÄ²¼¾ÖµÄ¸ß¶È
+	private int refreshBoundary;
+
+	// å®šä¹‰å¤´éƒ¨ä¸‹æ‹‰åˆ·æ–°çš„å¸ƒå±€çš„é«˜åº¦
 	private int headerContentHeight;
 	private int headerContentPaddingTop;
 
@@ -47,10 +51,12 @@ public class MyListView extends ListView implements OnScrollListener {
 
 	private int startY;
 	private int state;
-	private boolean isBack;
 
-	// ÓÃÓÚ±£Ö¤startYµÄÖµÔÚÒ»¸öÍêÕûµÄtouchÊÂ¼şÖĞÖ»±»¼ÇÂ¼Ò»´Î
-	private boolean isRecored;
+	// is the arrow icon turned upside down
+	private boolean isBack = false;
+
+	// ç”¨äºä¿è¯startYçš„å€¼åœ¨ä¸€ä¸ªå®Œæ•´çš„touchäº‹ä»¶ä¸­åªè¢«è®°å½•ä¸€æ¬¡
+	private boolean isRecorded;
 
 	private OnRefreshListener refreshListener;
 
@@ -67,14 +73,19 @@ public class MyListView extends ListView implements OnScrollListener {
 	}
 
 	private void init(Context context) {
-		setCacheColorHint(context.getResources().getColor(android.R.color.transparent));
+		setCacheColorHint(context.getResources().getColor(
+				android.R.color.transparent));
 		inflater = LayoutInflater.from(context);
-		headerView = (LinearLayout) inflater.inflate(R.layout.lv_header, this, false);
-		lvHeaderTipsTv = (TextView) headerView.findViewById(R.id.lvHeaderTipsTv);
-		lvHeaderLastUpdatedTv = (TextView) headerView.findViewById(R.id.lvHeaderLastUpdatedTv);
+		headerView = (LinearLayout) inflater.inflate(R.layout.lv_header, this,
+				false);
+		lvHeaderTipsTv = (TextView) headerView
+				.findViewById(R.id.lvHeaderTipsTv);
+		lvHeaderLastUpdatedTv = (TextView) headerView
+				.findViewById(R.id.lvHeaderLastUpdatedTv);
 
-		lvHeaderArrowIv = (ImageView) headerView.findViewById(R.id.lvHeaderArrowIv);
-		// ÉèÖÃÏÂÀ­Ë¢ĞÂÍ¼±êµÄ×îĞ¡¸ß¶ÈºÍ¿í¶È
+		lvHeaderArrowIv = (ImageView) headerView
+				.findViewById(R.id.lvHeaderArrowIv);
+		// è®¾ç½®ä¸‹æ‹‰åˆ·æ–°å›¾æ ‡çš„æœ€å°é«˜åº¦å’Œå®½åº¦
 		lvHeaderArrowIv.setMinimumWidth(70);
 		lvHeaderArrowIv.setMinimumHeight(50);
 
@@ -83,16 +94,12 @@ public class MyListView extends ListView implements OnScrollListener {
 		measureView(headerView);
 		headerContentHeight = headerView.getMeasuredHeight();
 		headerContentPaddingTop = headerView.getPaddingTop();
-		// ÉèÖÃÄÚ±ß¾à£¬ÕıºÃ¾àÀë¶¥²¿ÎªÒ»¸ö¸ºµÄÕû¸ö²¼¾ÖµÄ¸ß¶È£¬ÕıºÃ°ÑÍ·²¿Òş²Ø
-		//headerView.setPadding(0, -1 * headerContentHeight, 0, 0);
-		// ÖØ»æÒ»ÏÂ
-		//headerView.invalidate();
-		// ½«ÏÂÀ­Ë¢ĞÂµÄ²¼¾Ö¼ÓÈëListViewµÄ¶¥²¿
+		// å°†ä¸‹æ‹‰åˆ·æ–°çš„å¸ƒå±€åŠ å…¥ListViewçš„é¡¶éƒ¨
 		addHeaderView(headerView, null, false);
-		// ÉèÖÃ¹ö¶¯¼àÌıÊÂ¼ş
+		// è®¾ç½®æ»šåŠ¨ç›‘å¬äº‹ä»¶
 		setOnScrollListener(this);
 
-		// ÉèÖÃĞı×ª¶¯»­ÊÂ¼ş
+		// è®¾ç½®æ—‹è½¬åŠ¨ç”»äº‹ä»¶
 		animation = new RotateAnimation(0, 180,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
 				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -107,32 +114,35 @@ public class MyListView extends ListView implements OnScrollListener {
 		reverseAnimation.setDuration(200);
 		reverseAnimation.setFillAfter(true);
 
-		// Ò»¿ªÊ¼µÄ×´Ì¬¾ÍÊÇÏÂÀ­Ë¢ĞÂÍêµÄ×´Ì¬£¬ËùÒÔÎªDONE
+		// ä¸€å¼€å§‹çš„çŠ¶æ€å°±æ˜¯ä¸‹æ‹‰åˆ·æ–°å®Œçš„çŠ¶æ€ï¼Œæ‰€ä»¥ä¸ºDONE
 		state = DONE;
-		// ÊÇ·ñÕıÔÚË¢ĞÂ
+		// æ˜¯å¦æ­£åœ¨åˆ·æ–°
 		isRefreshable = false;
-		
+
+		refreshBoundary = headerContentHeight - headerContentPaddingTop;
+
 	}
 
-	public void onScrollStateChanged(AbsListView view, int scrollState) {}
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+	}
 
 	public void onScroll(AbsListView view, int firstVisibleItem,
-						 int visibleItemCount, int totalItemCount) {
+			int visibleItemCount, int totalItemCount) {
 		if (firstVisibleItem == 0) {
 			isRefreshable = true;
-        } else {
-            isRefreshable = false;
-        }
-    }
+		} else {
+			isRefreshable = false;
+		}
+	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		if (isRefreshable) {
 			switch (ev.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				if (!isRecored) {
-					isRecored = true;
-					startY = (int) ev.getY();// ÊÖÖ¸°´ÏÂÊ±¼ÇÂ¼µ±Ç°Î»ÖÃ
+				if (!isRecorded) {
+					isRecorded = true;
+					startY = (int) ev.getY();// æ‰‹æŒ‡æŒ‰ä¸‹æ—¶è®°å½•å½“å‰ä½ç½®
 				}
 				break;
 			case MotionEvent.ACTION_UP:
@@ -147,72 +157,62 @@ public class MyListView extends ListView implements OnScrollListener {
 						onLvRefresh();
 					}
 				}
-				isRecored = false;
+				isRecorded = false;
 				isBack = false;
 
 				break;
 
 			case MotionEvent.ACTION_MOVE:
 				int tempY = (int) ev.getY();
-				if (!isRecored) {
-					isRecored = true;
+				if (!isRecorded) {
+					isRecorded = true;
 					startY = tempY;
 				}
-				if (state != REFRESHING && isRecored && state != LOADING) {
-					// ±£Ö¤ÔÚÉèÖÃpaddingµÄ¹ı³ÌÖĞ£¬µ±Ç°µÄÎ»ÖÃÒ»Ö±ÊÇÔÚhead£¬·ñÔòÈç¹ûµ±ÁĞ±í³¬³öÆÁÄ»µÄ»°£¬µ±ÔÚÉÏÍÆµÄÊ±ºò£¬ÁĞ±í»áÍ¬Ê±½øĞĞ¹ö¶¯
-					// ¿ÉÒÔËÉÊÖÈ¥Ë¢ĞÂÁË
+				if (state != REFRESHING && isRecorded && state != LOADING) {
+					// ä¿è¯åœ¨è®¾ç½®paddingçš„è¿‡ç¨‹ä¸­ï¼Œå½“å‰çš„ä½ç½®ä¸€ç›´æ˜¯åœ¨headï¼Œå¦åˆ™å¦‚æœå½“åˆ—è¡¨è¶…å‡ºå±å¹•çš„è¯ï¼Œå½“åœ¨ä¸Šæ¨çš„æ—¶å€™ï¼Œåˆ—è¡¨ä¼šåŒæ—¶è¿›è¡Œæ»šåŠ¨
+					// å¯ä»¥æ¾æ‰‹å»åˆ·æ–°äº†
 					if (state == RELEASE_To_REFRESH) {
 						setSelection(0);
-						// ÍùÉÏÍÆÁË£¬ÍÆµ½ÁËÆÁÄ»×ã¹»ÑÚ¸ÇheadµÄ³Ì¶È£¬µ«ÊÇ»¹Ã»ÓĞÍÆµ½È«²¿ÑÚ¸ÇµÄµØ²½
-						if (((tempY - startY) / RATIO < headerContentHeight)// ÓÉËÉ¿ªË¢ĞÂ×´Ì¬×ª±äµ½ÏÂÀ­Ë¢ĞÂ×´Ì¬
+						// å¾€ä¸Šæ¨äº†ï¼Œæ¨åˆ°äº†å±å¹•è¶³å¤Ÿæ©ç›–headçš„ç¨‹åº¦ï¼Œä½†æ˜¯è¿˜æ²¡æœ‰æ¨åˆ°å…¨éƒ¨æ©ç›–çš„åœ°æ­¥
+						if (((tempY - startY) / RATIO < refreshBoundary)// ç”±æ¾å¼€åˆ·æ–°çŠ¶æ€è½¬å˜åˆ°ä¸‹æ‹‰åˆ·æ–°çŠ¶æ€
 								&& (tempY - startY) > 0) {
 							state = PULL_To_REFRESH;
 							changeHeaderViewByState();
 						}
-						// Ò»ÏÂ×ÓÍÆµ½¶¥ÁË
-						else if (tempY - startY <= 0) {// ÓÉËÉ¿ªË¢ĞÂ×´Ì¬×ª±äµ½done×´Ì¬
+						// ä¸€ä¸‹å­æ¨åˆ°é¡¶äº†
+						else if (tempY - startY <= 0) {// ç”±æ¾å¼€åˆ·æ–°çŠ¶æ€è½¬å˜åˆ°doneçŠ¶æ€
 							state = DONE;
 							changeHeaderViewByState();
 						}
 					}
-					// »¹Ã»ÓĞµ½´ïÏÔÊ¾ËÉ¿ªË¢ĞÂµÄÊ±ºò,DONE»òÕßÊÇPULL_To_REFRESH×´Ì¬
+					// è¿˜æ²¡æœ‰åˆ°è¾¾æ˜¾ç¤ºæ¾å¼€åˆ·æ–°çš„æ—¶å€™,DONEæˆ–è€…æ˜¯PULL_To_REFRESHçŠ¶æ€
 					if (state == PULL_To_REFRESH) {
 						setSelection(0);
-						// ÏÂÀ­µ½¿ÉÒÔ½øÈëRELEASE_TO_REFRESHµÄ×´Ì¬
-						if ((tempY - startY) / RATIO >= headerContentHeight - headerContentPaddingTop) {// ÓÉdone»òÕßÏÂÀ­Ë¢ĞÂ×´Ì¬×ª±äµ½ËÉ¿ªË¢ĞÂ
+						// ä¸‹æ‹‰åˆ°å¯ä»¥è¿›å…¥RELEASE_TO_REFRESHçš„çŠ¶æ€
+						if ((tempY - startY) / RATIO >= refreshBoundary) {// ç”±doneæˆ–è€…ä¸‹æ‹‰åˆ·æ–°çŠ¶æ€è½¬å˜åˆ°æ¾å¼€åˆ·æ–°
 							state = RELEASE_To_REFRESH;
-							isBack = true;
 							changeHeaderViewByState();
 						}
-						// ÉÏÍÆµ½¶¥ÁË
-						else if (tempY - startY <= 0) {// ÓÉDOne»òÕßÏÂÀ­Ë¢ĞÂ×´Ì¬×ª±äµ½done×´Ì¬
+						// ä¸Šæ¨åˆ°é¡¶äº†
+						else if (tempY - startY <= 0) {// ç”±DOneæˆ–è€…ä¸‹æ‹‰åˆ·æ–°çŠ¶æ€è½¬å˜åˆ°doneçŠ¶æ€
 							state = DONE;
 							changeHeaderViewByState();
 						}
 					}
-					// done×´Ì¬ÏÂ
+					// doneçŠ¶æ€ä¸‹
 					if (state == DONE) {
 						if (tempY - startY > 0) {
 							state = PULL_To_REFRESH;
 							changeHeaderViewByState();
 						}
 					}
-					// ¸üĞÂheadViewµÄsize
-					if (state == PULL_To_REFRESH) {
-			//			headerView.setPadding(0, -1 * headerContentHeight
-			//					+ (tempY - startY) / RATIO, 0, 0);
-						headerView.setPadding(0, headerContentPaddingTop + (tempY - startY) / RATIO, 0, 0);
+					// æ›´æ–°headViewçš„padding
+					if (state == PULL_To_REFRESH || state == RELEASE_To_REFRESH) {
+						headerView.setPadding(0, headerContentPaddingTop
+								+ (tempY - startY) / RATIO, 0, 0);
 					}
-					// ¸üĞÂheadViewµÄpaddingTop
-					if (state == RELEASE_To_REFRESH) {
-			//			headerView.setPadding(0, (tempY - startY) / RATIO
-			//					- headerContentHeight, 0, 0);
-						headerView.setPadding(0, headerContentPaddingTop + (tempY - startY) / RATIO, 0, 0);
-					}
-
 				}
 				break;
-
 			default:
 				break;
 			}
@@ -220,63 +220,47 @@ public class MyListView extends ListView implements OnScrollListener {
 		return super.onTouchEvent(ev);
 	}
 
-	// µ±×´Ì¬¸Ä±äÊ±ºò£¬µ÷ÓÃ¸Ã·½·¨£¬ÒÔ¸üĞÂ½çÃæ
+	// å½“çŠ¶æ€æ”¹å˜æ—¶å€™ï¼Œè°ƒç”¨è¯¥æ–¹æ³•ï¼Œä»¥æ›´æ–°ç•Œé¢
 	private void changeHeaderViewByState() {
 		switch (state) {
 		case RELEASE_To_REFRESH:
-			lvHeaderArrowIv.setVisibility(View.VISIBLE);
-			lvHeaderProgressBar.setVisibility(View.GONE);
-			lvHeaderTipsTv.setVisibility(View.VISIBLE);
-			lvHeaderLastUpdatedTv.setVisibility(View.VISIBLE);
-
-			lvHeaderArrowIv.clearAnimation();// Çå³ı¶¯»­
-			lvHeaderArrowIv.startAnimation(animation);// ¿ªÊ¼¶¯»­Ğ§¹û
-
-			lvHeaderTipsTv.setText("ËÉ¿ªË¢ĞÂ");
+			lvHeaderTipsTv.setText("æ¾å¼€åˆ·æ–°");
+			lvHeaderArrowIv.clearAnimation();// æ¸…é™¤åŠ¨ç”»
+			lvHeaderArrowIv.startAnimation(animation);// å¼€å§‹åŠ¨ç”»æ•ˆæœ
+			isBack = true;
 			break;
 		case PULL_To_REFRESH:
-			lvHeaderProgressBar.setVisibility(View.GONE);
-			lvHeaderTipsTv.setVisibility(View.VISIBLE);
-			lvHeaderLastUpdatedTv.setVisibility(View.VISIBLE);
-			lvHeaderArrowIv.clearAnimation();
-			lvHeaderArrowIv.setVisibility(View.VISIBLE);
-			// ÊÇÓÉRELEASE_To_REFRESH×´Ì¬×ª±äÀ´µÄ
+			// æ˜¯ç”±RELEASE_To_REFRESHçŠ¶æ€è½¬å˜æ¥çš„
 			if (isBack) {
-				isBack = false;
 				lvHeaderArrowIv.clearAnimation();
 				lvHeaderArrowIv.startAnimation(reverseAnimation);
-
-				lvHeaderTipsTv.setText("ÏÂÀ­Ë¢ĞÂ");
-			} else {
-				lvHeaderTipsTv.setText("ÏÂÀ­Ë¢ĞÂ");
+				isBack = false;
 			}
+			lvHeaderTipsTv.setText("ä¸‹æ‹‰åˆ·æ–°");
 			break;
 
 		case REFRESHING:
-
-		//	headerView.setPadding(0, 0, 0, 0);
-			headerView.setPadding(0, headerContentHeight, 0, 0);
-
+			headerView.setPadding(0, headerContentPaddingTop + refreshBoundary,
+					0, 0);
 			lvHeaderProgressBar.setVisibility(View.VISIBLE);
 			lvHeaderArrowIv.clearAnimation();
 			lvHeaderArrowIv.setVisibility(View.GONE);
-			lvHeaderTipsTv.setText("ÕıÔÚË¢ĞÂ...");
+			lvHeaderTipsTv.setText("æ­£åœ¨åˆ·æ–°...");
 			lvHeaderLastUpdatedTv.setVisibility(View.VISIBLE);
 			break;
 		case DONE:
-		//	headerView.setPadding(0, -1 * headerContentHeight, 0, 0);
 			headerView.setPadding(0, headerContentPaddingTop, 0, 0);
-
 			lvHeaderProgressBar.setVisibility(View.GONE);
 			lvHeaderArrowIv.clearAnimation();
+			lvHeaderArrowIv.setVisibility(View.VISIBLE);
 			lvHeaderArrowIv.setImageResource(R.drawable.arrow_down);
-			lvHeaderTipsTv.setText("ÏÂÀ­Ë¢ĞÂ");
+			lvHeaderTipsTv.setText("ä¸‹æ‹‰åˆ·æ–°");
 			lvHeaderLastUpdatedTv.setVisibility(View.VISIBLE);
 			break;
 		}
 	}
 
-	// ´Ë·½·¨Ö±½ÓÕÕ°á×ÔÍøÂçÉÏµÄÒ»¸öÏÂÀ­Ë¢ĞÂµÄdemo£¬´Ë´¦ÊÇ¡°¹À¼Æ¡±headViewµÄwidthÒÔ¼°height
+	// æ­¤æ–¹æ³•ç›´æ¥ç…§æ¬è‡ªç½‘ç»œä¸Šçš„ä¸€ä¸ªä¸‹æ‹‰åˆ·æ–°çš„demoï¼Œæ­¤å¤„æ˜¯â€œä¼°è®¡â€headViewçš„widthä»¥åŠheight
 	private void measureView(View child) {
 		ViewGroup.LayoutParams params = child.getLayoutParams();
 		if (params == null) {
@@ -309,7 +293,7 @@ public class MyListView extends ListView implements OnScrollListener {
 
 	public void onRefreshComplete() {
 		state = DONE;
-		lvHeaderLastUpdatedTv.setText("×î½ü¸üĞÂ:" + new Date().toLocaleString());
+		lvHeaderLastUpdatedTv.setText("æœ€è¿‘æ›´æ–°:" + new Date().toLocaleString());
 		changeHeaderViewByState();
 	}
 
@@ -320,8 +304,26 @@ public class MyListView extends ListView implements OnScrollListener {
 	}
 
 	public void setAdapter(LvAdapter adapter) {
-		lvHeaderLastUpdatedTv.setText("×î½ü¸üĞÂ:" + new Date().toLocaleString());
+		lvHeaderLastUpdatedTv.setText("æœ€è¿‘æ›´æ–°:" + new Date().toLocaleString());
 		super.setAdapter(adapter);
+	}
+
+	public void setHeaderPaddingTop(int px) {
+		headerView.setPadding(headerView.getPaddingLeft(), px,
+				headerView.getPaddingRight(), headerView.getPaddingBottom());
+		headerContentPaddingTop = px;
+	}
+
+	public void hideHeader() {
+		setHeaderPaddingTop(-1 * refreshBoundary);
+	}
+
+	public int getHeaderPaddingTop() {
+		return headerContentPaddingTop;
+	}
+
+	public int getHeaderHeight() {
+		return headerContentHeight;
 	}
 
 }

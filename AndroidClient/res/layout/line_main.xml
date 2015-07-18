@@ -1,56 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@android:id/tabhost"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">    
- 	
+    android:layout_height="match_parent" >
+
     <LinearLayout
-        android:id="@+id/lineHeader"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="vertical"
-        android:background="#ffffff"
-        android:layout_alignParentTop="true">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:padding="5dp">
-            <EditText
-                android:id="@+id/playgroundProjectSearch"
-                android:background="@drawable/edittext_with_round_corner"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:hint="@string/playgroundProjectInputHint"
-                android:textSize="15sp"
-                android:paddingLeft="8dp"
-                android:drawablePadding="10dp"
-                android:singleLine="true">
-            </EditText>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_height="40dp"
-            android:layout_width="match_parent">
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:prompt="@string/lineFragSpin1Prompt"
-                android:entries="@array/lineFragSpin1Item" />
-
-            <Spinner
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:prompt="@string/lineFragSpin2Prompt"
-                android:entries="@array/lineFragSpin2Item" />
-        </LinearLayout>
-    </LinearLayout>
-    
-    
-    <com.playfun.lineonline.widget.MyListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lineListView"/>
-    
-</RelativeLayout>
+        android:orientation="vertical" >
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/tb_bg_for_line" />
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9" >
+        </FrameLayout>
+    </LinearLayout>
+
+</TabHost>

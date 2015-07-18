@@ -1,0 +1,81 @@
+<RelativeLayout
+    android:id="@+id/mapView"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:focusableInTouchMode="true">
+	        <AutoCompleteTextView
+                android:id="@+id/searchban"
+                android:background="@drawable/edittext_with_round_corner"
+                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:hint="搜索"
+                android:textSize="15sp"
+                android:paddingLeft="8dp"
+                android:drawablePadding="10dp"
+                android:singleLine="true">
+            </AutoCompleteTextView>
+	<com.playfun.lineonline.widget.MultiDirectionSlidingDrawer
+		xmlns:my="http://schemas.android.com/apk/res/com.playfun.lineonline"
+		android:id="@+id/drawer"
+		my:direction="topToBottom"
+		android:layout_width="fill_parent"
+		android:layout_height="130dp"
+		android:layout_below="@+id/searchban"
+		my:handle="@+id/handle"
+		my:content="@+id/gridview">
+		 <GridView 
+    			android:id="@+id/gridview" 
+    			android:layout_width="fill_parent" 
+    			android:layout_height="40dp"
+    			android:numColumns="auto_fit" 
+    			android:verticalSpacing="10dp"
+    			android:background="#f5f5f5" 
+    			android:horizontalSpacing="100dp" 
+    			android:columnWidth="45dp" 
+    			android:stretchMode="columnWidth" 
+    			android:gravity="center" /> 	
+		<ImageView
+			android:id="@id/handle"
+			android:layout_width="wrap_content"
+			android:layout_height="40px"
+			android:src="@drawable/sliding_drawer_handle_bottom" />
+	</com.playfun.lineonline.widget.MultiDirectionSlidingDrawer>
+	 <LinearLayout
+        android:layout_below="@id/searchban"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_marginTop="15dp"
+        android:id="@+id/tbtnlayout"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="12"
+            android:background="@drawable/button_style"
+            android:onClick="searchButtonProcess"
+            android:padding="10dip"
+            android:text="开始" />
+
+        <Button
+            android:id="@+id/map_next_data"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="12"
+            android:background="@drawable/button_style"
+            android:onClick="goToNextPage"
+            android:padding="10dip"
+            android:text="下一组数据" />
+    </LinearLayout>
+	
+	  <fragment
+            android:id="@+id/map1"
+             
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
+            class="com.baidu.mapapi.map.SupportMapFragment" />
+</RelativeLayout>

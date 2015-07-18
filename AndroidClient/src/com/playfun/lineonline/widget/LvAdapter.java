@@ -11,10 +11,14 @@ import android.widget.TextView;
 public class LvAdapter extends BaseAdapter {
 	private List<View> list;
 	private Context context;
-	
+
 	public LvAdapter(Context context, List<View> list) {
 		this.list = list;
 		this.context = context;
+	}
+	
+	public void setList(List<View> list) {
+		this.list = list;
 	}
 
 	public int getCount() {

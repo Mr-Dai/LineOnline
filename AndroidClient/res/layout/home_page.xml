@@ -2,97 +2,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="#ffffff"
     tools:context="com.playfun.lineonline.HomePage" >
 
     <LinearLayout
         android:id="@+id/homePageHeader"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:orientation="vertical">
+        android:orientation="vertical" >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/background_orange">
+            android:background="@color/background_orange"
+            android:focusable="true"
+            android:focusableInTouchMode="true" >
+
             <TextView
-                android:text="@string/app_name"
-                android:textSize="23sp"
-                android:textColor="@color/text_deep_gray"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center" />
-            
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/text_deep_gray"
+                android:textSize="23sp" />
+
             <ImageView
                 android:id="@+id/twoDScanMenuItem"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:padding="5dp"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/twod_scan_icon"/>
+                android:padding="5dp"
+                android:src="@drawable/twod_scan_icon" />
+
+            <TextView
+                android:id="@+id/citySelector"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="国内全部"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/citySelectorArrow"
+                android:layout_width="23dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/citySelector"
+                android:paddingLeft="3dp"
+                android:src="@drawable/white_arrow_down" />
         </RelativeLayout>
-        <LinearLayout
+        <EditText
+            android:id="@+id/playgroundSearch"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:padding="5dp">
-            <EditText
-                android:id="@+id/playgroundSearch"
-                android:background="@drawable/edittext_with_round_corner"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:hint="@string/playgroundIDInputHint"
-                android:textSize="15sp"
-                android:paddingLeft="8dp"
-                android:drawablePadding="10dp"
-                android:singleLine="true">
-            </EditText>
-        </LinearLayout>
+            android:layout_height="30dp"
+            android:background="@drawable/edittext_with_round_corner"
+            android:drawablePadding="10dp"
+            android:hint="@string/playgroundIDInputHint"
+            android:imeOptions="actionSearch"
+            android:layout_margin="5dp"
+            android:paddingLeft="8dp"
+            android:singleLine="true"
+            android:textSize="15sp" />
     </LinearLayout>
-    
-	<LinearLayout
-        android:layout_below="@id/homePageHeader"
+
+    <ListView
+        android:id="@+id/playgroundList"
+        android:background="#ffffff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <ImageView
-            android:id="@+id/homePageImageItem1"
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:padding="5dp"
-            android:layout_weight="1"
-            android:src="@drawable/playground_icon_2"
-            android:scaleType="fitXY"
-            android:contentDescription="长隆欢乐世界" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-            <ImageView
-            	android:id="@+id/homePageImageItem2"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-           		android:padding="5dp"
-          	    android:scaleType="fitXY"
-                android:src="@drawable/playground_icon_1"
-                android:contentDescription="迪士尼乐园"/>
-            <ImageView
-            	android:id="@+id/homePageImageItem3"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-            	android:padding="5dp"
-                android:src="@drawable/playground_icon_2"
-            	android:scaleType="fitXY"
-                android:contentDescription="长隆欢乐世界"/>
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/homePageImageItem4"
-            android:layout_height="0dip"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:scaleType="fitXY"
-            android:padding="5dp"
-            android:src="@drawable/playground_icon_1"
-            android:contentDescription="迪士尼乐园"/>
-    </LinearLayout>        
+        android:layout_height="wrap_content"
+        android:layout_below="@id/homePageHeader" />
+
 </RelativeLayout>
