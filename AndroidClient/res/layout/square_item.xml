@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:paddingTop="20dp" >
+
+    <TextView
+        android:id="@+id/bubbleAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="@null"
+        android:textColor="#02A8F3"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/postTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/bubbleAuthor"
+        android:layout_marginRight="10dp"
+        android:text="@null"
+        android:textColor="#d7d6d6"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bubbleAuthor"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:text="@null"
+        android:textColor="#090909"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/sharePic"
+        android:layout_width="200dp"
+        android:layout_height="120dp"
+        android:layout_alignLeft="@+id/content"
+        android:layout_below="@+id/content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/loading" />
+
+    <LinearLayout
+        android:id="@+id/commentBanner"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sharePic"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/likeLayout"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#f4f4f4" >
+
+            <ImageView
+                android:id="@+id/likeBtn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:padding="5dp"
+                android:layout_marginLeft="15dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/unlike" />
+
+            <TextView
+                android:id="@+id/likeNum"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_alignBottom="@id/likeBtn"
+                android:layout_toRightOf="@id/likeBtn"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="@null"
+                android:textColor="@color/text_gray"
+                android:textSize="22sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/cmmLayout"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#f4f4f4" >
+
+            <ImageView
+                android:id="@+id/cmmBtn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:padding="5dp"
+                android:layout_marginLeft="15dp"
+                android:scaleType="fitCenter"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/comment" />
+
+            <TextView
+                android:id="@+id/cmmNum"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_toRightOf="@id/cmmBtn"
+                android:gravity="center_vertical"
+                android:text="@null"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/text_gray"
+                android:textSize="22sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/commentBanner"
+        android:scaleType="fitXY"
+        android:src="@drawable/banner" />
+
+</RelativeLayout>

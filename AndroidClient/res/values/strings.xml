@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">乐游Online</string>
@@ -17,7 +17,7 @@
     <string name="title_activity_home_page">HomePage</string>
     <string name="twoDScanMenuItemText">扫一扫</string>
     <string name="groundSearchMenuItemText">游乐场搜索</string>
-    <string name="playgroundIDInputHint">请输入游乐园号</string>
+    <string name="playgroundIDInputHint">输入关键字搜索游乐场</string>
     <string name="playgroundProjectInputHint">请输入游玩项目</string>
     <string name="u_slide_board">U型滑板</string>
     <string name="release_to_refresh">松开刷新</string>
@@ -26,13 +26,11 @@
     <string name="lineFragSpin1Prompt">项目筛选</string>
     <string-array name="lineFragSpin1Item">
         <item>全部</item>
-        <item>哈比王国</item>
-        <item>开心乐园</item>
-        <item>尖叫地带</item>
-        <item>旋风岛</item>
-        <item>彩虹湾</item>
-        <item>欢乐水世界</item>
-        <item>乐园餐厅</item>
+        <item>飓风飞椅</item>
+        <item>U型滑板</item>
+        <item>墨西哥草帽</item>
+        <item>碰碰车</item>
+        <item>音乐船</item>
     </string-array>
     <string name="lineFragSpin2Prompt">排序规则</string> 
     <string-array name="lineFragSpin2Item">
@@ -40,5 +38,7 @@
         <item>距离最近</item>
         <item>人气最高</item>
     </string-array>
+    
+    <string name="no_data">找不到更多信息</string>
 
 </resources>

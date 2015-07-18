@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.playfun.lineonline.MainFrame" >
+    <item
+        android:id="@+id/logout"
+        android:orderInCategory="100"
+        android:title="退出登录" />
+    <item
+        android:id="@+id/exit"
+        android:orderInCategory="100"
+        android:title="退出程序" />
+ 
+</menu>

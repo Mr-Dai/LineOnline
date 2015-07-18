@@ -1,71 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- ListView的头部 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="25dp">
+    android:paddingTop="25dp" >
 
     <!-- 内容 -->
-        <!-- 箭头图像、进度条 -->
-        <FrameLayout
-            android:layout_width="0dip"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_weight="3" >
+    <!-- 箭头图像、进度条 -->
 
-            <!-- 箭头 -->
+    <FrameLayout
+        android:layout_width="0dip"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_weight="3" >
 
-            <ImageView
-                android:id="@+id/lvHeaderArrowIv"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="right|center_vertical"
-                android:src="@drawable/arrow_down" />
+        <!-- 箭头 -->
 
-            <!-- 进度条 -->
+        <ImageView
+            android:id="@+id/lvHeaderArrowIv"
+            android:layout_width="40dp"
+            android:padding="8dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/arrow_down" />
 
-            <ProgressBar
-                android:id="@+id/lvHeaderProgressBar"
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"
-                android:layout_gravity="right|center_vertical"
-                android:visibility="gone" />
-        </FrameLayout>
+        <!-- 进度条 -->
 
-        <!-- 提示、最近更新 -->
+        <ProgressBar
+            android:id="@+id/lvHeaderProgressBar"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right|center_vertical"
+            android:padding="10dp"
+            android:visibility="gone" />
+    </FrameLayout>
 
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="50dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_weight="7" >
+    <!-- 提示、最近更新 -->
 
-            <!-- 提示 -->
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="50dp"
+        android:layout_weight="7"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/lvHeaderTipsTv"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:text="下拉刷新"
-                android:textColor="#000000"
-                android:paddingLeft="35dp"
-                android:gravity="bottom|right"
-                android:layout_gravity="left"
-                android:textSize="18sp" />
+        <!-- 提示 -->
 
-            <!-- 最近更新 -->
+        <TextView
+            android:id="@+id/lvHeaderTipsTv"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="left"
+            android:gravity="bottom|right"
+            android:paddingLeft="35dp"
+            android:text="下拉刷新"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/lvHeaderLastUpdatedTv"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:text="上次更新"
-                android:layout_gravity="left"
-                android:textColor="@color/text_gray"
-                android:textSize="10sp" />
-        </LinearLayout>
+        <!-- 最近更新 -->
+
+        <TextView
+            android:id="@+id/lvHeaderLastUpdatedTv"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="left"
+            android:text="上次更新"
+            android:textColor="@color/text_gray"
+            android:textSize="10sp" />
+    </LinearLayout>
 
 </LinearLayout>

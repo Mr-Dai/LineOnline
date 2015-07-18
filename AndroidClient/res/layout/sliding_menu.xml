@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff" >
+    
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/bg_orange"
+        android:gravity="center"
+        android:text="智能规划路线"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/white_block_with_gray_border_below"
+        android:text="注意事项"
+        android:textColor="@color/text_orange"
+        android:textSize="30sp"
+        android:textStyle="bold"
+ 		android:gravity="center" />
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="智能规划功能目前仍"
+        android:textSize="20sp"
+        android:textColor="@color/text_orange"
+        android:gravity="center_horizontal|bottom" />
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="处于测试阶段"
+        android:textSize="20sp"
+        android:textColor="@color/text_orange"
+        android:gravity="center_horizontal|bottom" />
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="不保证能完全正常运行"
+        android:textSize="20sp"
+        android:textColor="@color/text_orange"
+        android:gravity="center_horizontal|bottom" />
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="您仍要使用该功能吗？"
+        android:textSize="20sp"
+        android:textColor="@color/text_orange"
+        android:gravity="center_horizontal|bottom" />
+    
+    <Button
+        android:id="@+id/planBtn"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:text="开始规划"
+        android:layout_margin="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:background="@drawable/deep_blue_button_with_round_corner" />
+
+</LinearLayout>

@@ -1,33 +1,55 @@
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.playfun.lineonline.MainFrame"
-    android:id="@android:id/tabhost">
-    
-  	<RelativeLayout
+    android:layout_height="match_parent" >
+
+    <com.playfun.lineonline.widget.SlidingMenu
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
-  	    <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="0dp"
-                android:layout_height="0dp" />
-  	    
-   	 	<android.support.v4.view.ViewPager
-        	xmlns:android="http://schemas.android.com/apk/res/android"
-        	android:id="@+id/pager"
-        	android:layout_width="match_parent"
-        	android:layout_height="match_parent"
-        	android:layout_above="@android:id/tabs" >
-    	</android.support.v4.view.ViewPager>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
 
-    	<TabWidget
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_alignParentBottom="true"
-        	android:orientation="horizontal"
-        	android:id="@android:id/tabs" />
-	
-	</RelativeLayout>
-</TabHost>
+            <include layout="@layout/sliding_menu" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+                <TabHost
+                    android:id="@android:id/tabhost"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" >
+
+                        <TabWidget
+                            android:id="@android:id/tabs"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/tb_bg_for_main" />
+
+                        <FrameLayout
+                            android:id="@android:id/tabcontent"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_above="@android:id/tabs" />
+                    </RelativeLayout>
+                </TabHost>
+                <ImageView
+                    android:id="@+id/mask"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#aa000000"
+                    android:src="@null"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.playfun.lineonline.widget.SlidingMenu>
+
+</RelativeLayout>

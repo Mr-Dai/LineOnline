@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:padding="5dp"
+    android:background="@drawable/line_list_item_bg_with_thin_border"
+    android:focusable="false"
+	android:focusableInTouchMode="false" >
+	
+    <TextView android:id="@+id/loadMoreText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="加载更多"
+        android:textColor="@color/text_deep_gray"
+        android:textSize="20sp" />
+
+</RelativeLayout>

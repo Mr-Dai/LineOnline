@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/visitlayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/bg_orange" >
+
+        <ImageView
+            android:id="@+id/listBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:src="@drawable/list_icon" />
+        
+        <TextView
+            android:id="@+id/userID"
+            android:layout_toRightOf="@id/listBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="user"
+            android:textStyle="bold"
+            android:textColor="@color/text_blue"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/foodTicket"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:padding="13dp"
+            android:src="@drawable/food_ticket" />
+
+        <ImageView
+            android:id="@+id/messageInfo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="13dp"
+            android:layout_toLeftOf="@+id/foodTicket"
+            android:src="@drawable/message_info" />
+
+        <ImageView
+            android:id="@+id/editComment"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="13dp"
+            android:layout_toLeftOf="@+id/messageInfo"
+            android:src="@drawable/editing_whi" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sortLayout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/visitlayout"
+        android:background="#f2f2f2"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/sortInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="最新"
+            android:textColor="#000000"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/arrow_down"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@id/sortInfo"
+            android:background="@drawable/arrow_down" />
+    </RelativeLayout>
+        
+    <com.playfun.lineonline.widget.MyListView
+        android:id="@+id/myListView"
+        android:layout_below="@id/sortLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
